@@ -1,8 +1,7 @@
 #### The Meteor Chef
 #### \#004 - Santa Tracker
 
-Santa is coming down from the North Pole to deliver presents to kids all over the world.
-We'll learn how to use the Mapbox API to create an interactive map that we can use to track this bearded fellow.
+Santa Claus is coming down from the North Pole to deliver presents to kids all over the world. We'll learn how to use the Mapbox API to create an interactive map that we can use to track this bearded fellow.
 
 
 [Read on The Meteor Chef](http://themeteorchef.com/recipes/santa-tracker)  
