@@ -3,6 +3,16 @@
 * Routes that are visible to all (public) users.
 */
 
+
+Router.route('index', {
+  path: '/',
+  template: 'santaTracker',
+  onBeforeAction: function(){
+    // Code to run before route goes here.
+    this.next();
+  }
+});
+
 Router.route('signup', {
   path: '/signup',
   template: 'signup',

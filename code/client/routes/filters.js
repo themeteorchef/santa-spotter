@@ -41,6 +41,7 @@ userAuthenticated = function(){
 
 Router.onBeforeAction(checkUserLoggedIn, {
   except: [
+    'index',
     'signup',
     'login',
     'recover-password',
