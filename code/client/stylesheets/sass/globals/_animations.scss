@@ -39,3 +39,20 @@
   50%  { box-shadow: 0px 0px 15px #e02f2d; }
   100% { box-shadow: 0px 0px 0px #e02f2d; }
 }
+
+@-webkit-keyframes marquee {
+  0%   { text-indent: 2500px; }
+  100% { text-indent: -2500px; }
+}
+@-moz-keyframes marquee {
+  0%   { text-indent: 2500px; }
+  100% { text-indent: -2500px; }
+}
+@-o-keyframes marquee {
+  0%   { text-indent: 2500px; }
+  100% { text-indent: -2500px; }
+}
+@keyframes marquee {
+  0%   { text-indent: 2500px; }
+  100% { text-indent: -2500px; }
+}

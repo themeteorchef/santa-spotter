@@ -19,8 +19,8 @@ body {
 .santa-header p {
   float: left;
   color: #fff;
-  font-size: 22px;
-  line-height: 22px;
+  font-size: 20px;
+  line-height: 20px;
   margin: 0;
   position: relative;
   top: -2px;
@@ -30,11 +30,11 @@ body {
 .connection-status {
   @extend %clearfix;
   position: absolute;
-  top: 10px;
-  right: 20px;
+  top: 12px;
+  right: 10px;
   border-radius: 3px;
   background: #eee;
-  padding: 10px 7px 5px 15px;
+  padding: 10px 5px 5px 15px;
 
   p {
     color: #555;
@@ -80,11 +80,58 @@ body {
   left: 0; right: 0;
   bottom: 60px;
   color: #fff;
+  overflow-x: hidden;
 
-  p {
+  .tips {
+    margin: 0;
+  }
+
+  .title {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    float: left;
     margin: 0;
     font-size: 16px;
     font-family: "Roboto Slab";
+    font-weight: 300;
+    background: darken($santa-blue, 30%);
+    height: 60px;
+    padding: 18px 20px 0 20px;
+  }
+
+  .marquee {
+    width: 5000px;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    -webkit-animation: marquee 45s linear infinite;
+    -moz-animation: marquee 45s linear infinite;
+    -ms-animation: marquee 45s linear infinite;
+    -o-animation: marquee 45s linear infinite;
+    animation: marquee 45s linear infinite;
+
+    &:hover {
+      -webkit-animation-play-state: paused;
+      -moz-animation-play-state: paused;
+      -o-animation-play-state: paused;
+      animation-play-state: paused;
+    }
+  }
+
+  .tips a {
+    color: #fff;
+    padding-left: 30px;
+    text-decoration: underline;
+    padding-bottom: 5px;
+
+    &:hover {
+      color: lighten($santa-blue, 10%);
+    }
+
+    &:last-child {
+      margin-right: 0px;
+    }
   }
 }
 
