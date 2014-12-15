@@ -14,22 +14,21 @@ Template.santaTracker.rendered = function(){
         type: "FeatureCollection",
         features: [{
           type: "Feature",
+          properties: {
+            color: "#0099ff",
+            weight: 10,
+            opacity: 0.3
+          },
           geometry: {
             type: "LineString",
             coordinates: [
               [69.1833344, 34.5166667],
               [-83.5552139, 41.6639383],
               [-122.4194183, 37.7749295]
-            ],
-            properties: {
-              color: "#0099ff",
-              weight: 10,
-              opacity: 0.3
-            }
+            ]
           }
         }]
       };
-
 
       // Add this generated geojson object to the map.
       L.geoJson(geojson).addTo(map);
