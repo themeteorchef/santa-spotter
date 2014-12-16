@@ -1,6 +1,12 @@
 Template.santaTracker.rendered = function(){
+  // Wrap our Mapbox setup in a Tracker.autorun() call so that once
+  // Mapbox.loaded() is true, our map is displayed on the template.
   Tracker.autorun(function () {
     if (Mapbox.loaded()) {
+      // If Mapbox loads as expected, pass it our accessToken, along with the
+      // details of our map. Note: you'll need to setup a map via mapbox.com in
+      // order to get the token (themeteorchef.450d4794). This is unique to an
+      // individual map.
       L.mapbox.accessToken = "pk.eyJ1IjoidGhlbWV0ZW9yY2hlZiIsImEiOiJmelotbTdrIn0.QmNnWntI9zqeqLrxS6mRkA";
       var map = L.mapbox.map('map', 'themeteorchef.450d4794', {
         zoom: 3,
@@ -8,15 +14,31 @@ Template.santaTracker.rendered = function(){
         maxZoom: 6
       });
 
-      // Generate a GeoJSON line. You could also load GeoJSON via AJAX
-      // or generate it some other way.
+      /*
+        TODO:
+        1. Get list of locations/stops with Latitude & Longitude.
+        2. Write a loader to pull locations/stops into database.
+        3. Write a Chron Job to start Santa at 11am UTC (UTC +13, Tonga Time).
+        4. Over the course of a full day, move Santa every 5 minutes. // 24 hours = 1,440 minutes / ~280 stops = ~5 minutes per stop.
+        5. Track the server connection of Meteor.
+        6. If Meteor disconnects/reconnects, setup function to restart Chron Job.
+        7. Profit.
+      */
+
+      // Define our GeoJSON line. GeoJSON is a specification that allows us to
+      // quickly and consistently plot out different geometry on our map. Here,
+      // we want to create a path for Santa Claus to follow, so we setup the
+      // style of our line and pass an array of coordinates (each coordinate is
+      // a two-number array itself). Note that we're pulling in our coordinates
+      // from a Mongo collection so that we can decide the starting point if
+      // our server goes down.
       var geojson = {
         type: "FeatureCollection",
         features: [{
           type: "Feature",
           properties: {
             color: "#0099ff",
-            weight: 10,
+            weight: 8,
             opacity: 0.3
           },
           geometry: {
@@ -31,7 +53,11 @@ Template.santaTracker.rendered = function(){
       };
 
       // Add this generated geojson object to the map.
-      L.geoJson(geojson).addTo(map);
+      L.geoJson(geojson, {
+        style: function(feature) {
+          return feature.properties
+        }
+      }).addTo(map);
 
       // Create a counter with a value of 0.
       var j = 0;
@@ -43,17 +69,23 @@ Template.santaTracker.rendered = function(){
         })
       }).addTo(map);
 
+      // Start movement of marker.
       tick();
+
+      // Define function to handle movement of marker.
       function tick() {
           // Set the marker to be at the same point as one
           // of the segments or the line.
-          marker.setLatLng(L.latLng(
+          marker.setLatLng(
+            L.latLng(
               geojson.features[0].geometry.coordinates[j][1],
-              geojson.features[0].geometry.coordinates[j][0]));
+              geojson.features[0].geometry.coordinates[j][0]
+            )
+          );
 
           // Move to the next point of the line
           // until `j` reaches the length of the array.
-          if (++j < geojson.features[0].geometry.coordinates.length) setTimeout(tick, 1000);
+          if (++j < geojson.features[0].geometry.coordinates.length) setTimeout(tick, 2000);
       }
 
     } // end if Mapbox.loaded()
