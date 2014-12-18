@@ -159,3 +159,8 @@ body {
   bottom: 120px;
   width: 100%;
 }
+
+.leaflet-container img.leaflet-marker-icon {
+  -webkit-transition: transform 1s ease-in-out;
+  transition: transform 1s ease-in-out;
+}

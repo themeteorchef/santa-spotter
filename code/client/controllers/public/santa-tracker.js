@@ -39,14 +39,22 @@ Template.santaTracker.rendered = function(){
           properties: {
             color: "#0099ff",
             weight: 8,
-            opacity: 0.3
+            opacity: 0
           },
           geometry: {
             type: "LineString",
             coordinates: [
-              [69.1833344, 34.5166667],
-              [-83.5552139, 41.6639383],
-              [-122.4194183, 37.7749295]
+              [178.4416667, -18.14138889],
+              [174.7633315, -36.8484597],
+              [174.776236, -41.2864603],
+              [172.633333, -43.533333],
+              [166.45, -22.2666667],
+              [168.3216667, -17.73555556],
+              [159.95, -9.4333333],
+              [158.65, 53.0166667],
+              [147.333333, -42.916667],
+              [144.966667, -37.816667],
+              [151.2166667, -33.88305556]
             ]
           }
         }]
@@ -76,16 +84,17 @@ Template.santaTracker.rendered = function(){
       function tick() {
           // Set the marker to be at the same point as one
           // of the segments or the line.
-          marker.setLatLng(
-            L.latLng(
-              geojson.features[0].geometry.coordinates[j][1],
-              geojson.features[0].geometry.coordinates[j][0]
-            )
-          );
+          var latLng = L.latLng(
+            geojson.features[0].geometry.coordinates[j][1],
+            geojson.features[0].geometry.coordinates[j][0]
+          )
+          marker.setLatLng(latLng);
+
+          //map.panTo(latLng);
 
           // Move to the next point of the line
           // until `j` reaches the length of the array.
-          if (++j < geojson.features[0].geometry.coordinates.length) setTimeout(tick, 2000);
+          if (++j < geojson.features[0].geometry.coordinates.length) setTimeout(tick, 5000);
       }
 
     } // end if Mapbox.loaded()
