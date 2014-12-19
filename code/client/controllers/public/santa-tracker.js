@@ -12,7 +12,7 @@ Template.santaTracker.rendered = function(){
         coordinatesArray.push( [ santaStops[i].longitude, santaStops[i].latitude ] );
       }
 
-      if ( Mapbox.loaded() && coordinatesArray.length == 224 ) {
+      if ( Mapbox.loaded() && coordinatesArray.length == 331 ) {
         // If Mapbox loads as expected, pass it our accessToken, along with the
         // details of our map. Note: you'll need to setup a map via mapbox.com in
         // order to get the token (themeteorchef.450d4794). This is unique to an
