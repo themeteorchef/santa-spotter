@@ -76,9 +76,6 @@ Template.santaTracker.rendered = function(){
 
           map.panTo(latLng);
           marker.setLatLng(latLng);
-          var markerStyle = marker._icon.attributes[3].value;
-          $('.beacon').attr('style', markerStyle);
-
 
           // Move to the next point of the line
           // until `j` reaches the length of the array.
@@ -90,8 +87,6 @@ Template.santaTracker.rendered = function(){
         // Start movement of marker.
         setTimeout(function(){
           tick();
-
-          $('.leaflet-marker-icon').after('<div class="beacon"></div>');
         }, 1000);
 
       } // end if Mapbox.loaded()
