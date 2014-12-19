@@ -30,3 +30,23 @@ for(i=0; i < users.length; i++){
     });
   }
 }
+
+/*
+* Load Santa's Stops
+* Pulls in the list of Santa's stops automatically on startup.
+*/
+
+// Pull in Santa's stops.
+var stops = SANTA_STOPS;
+
+// Loop through array of user accounts.
+for(i=0; i < stops.length; i++){
+  // Check if the user already exists in the DB.
+  var stop      = stops[i],
+      checkStop = Stops.findOne({"name": stop.name});
+
+  // If the stop isn't found, add it to the collection.
+  if( !checkStop ){
+    Stops.insert(stop);
+  }
+}

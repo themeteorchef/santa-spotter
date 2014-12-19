@@ -161,6 +161,24 @@ body {
 }
 
 .leaflet-container img.leaflet-marker-icon {
+  margin-left: -16px !important;
   -webkit-transition: transform 1s ease-in-out;
   transition: transform 1s ease-in-out;
+}
+
+.beacon {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 100px;
+  z-index: -1000 !important;
+  margin-left: -12px !important;
+  margin-top: -12px !important;
+  box-shadow: 0px 0px 50px $santa-blue;
+  -webkit-transition: transform 1s ease-in-out;
+  transition: transform 1s ease-in-out;
+  -webkit-animation: santaBeacon 1s infinite;
+  -moz-animation: santaBeacon 1s infinite;
+  -ms-animation: santaBeacon 1s infinite;
+  -o-animation: santaBeacon 1s infinite;
+  animation: santaBeacon 1s infinite;
 }

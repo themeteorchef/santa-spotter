@@ -56,3 +56,24 @@
   0%   { text-indent: 2500px; }
   100% { text-indent: -2500px; }
 }
+
+@-webkit-keyframes santaBeacon {
+  0%   { box-shadow: 0px 0px 0px limegreen, 0px 0px 0px limegreen, 0px 0px 0px limegreen; }
+  50%  { box-shadow: 0px 0px 50px limegreen, 0px 0px 50px limegreen, 0px 0px 50px limegreen; }
+  100% { box-shadow: 0px 0px 0px limegreen, 0px 0px 0px limegreen, 0px 0px 0px limegreen; }
+}
+@-moz-keyframes santaBeacon {
+  0%   { box-shadow: 0px 0px 0px limegreen, 0px 0px 0px limegreen, 0px 0px 0px limegreen; }
+  50%  { box-shadow: 0px 0px 50px limegreen, 0px 0px 50px limegreen, 0px 0px 50px limegreen; }
+  100% { box-shadow: 0px 0px 0px limegreen, 0px 0px 0px limegreen, 0px 0px 0px limegreen; }
+}
+@keyframes santaBeacon {
+  0%   { box-shadow: 0px 0px 0px limegreen, 0px 0px 0px limegreen, 0px 0px 0px limegreen; }
+  50%  { box-shadow: 0px 0px 50px limegreen, 0px 0px 50px limegreen, 0px 0px 50px limegreen; }
+  100% { box-shadow: 0px 0px 0px limegreen, 0px 0px 0px limegreen, 0px 0px 0px limegreen; }
+}
+@keyframes santaBeacon {
+  0%   { box-shadow: 0px 0px 0px limegreen, 0px 0px 0px limegreen, 0px 0px 0px limegreen; }
+  50%  { box-shadow: 0px 0px 50px limegreen, 0px 0px 50px limegreen, 0px 0px 50px limegreen; }
+  100% { box-shadow: 0px 0px 0px limegreen, 0px 0px 0px limegreen, 0px 0px 0px limegreen; }
+}
