@@ -165,3 +165,14 @@ body {
   -webkit-transition: transform 1s ease-in-out;
   transition: transform 1s ease-in-out;
 }
+
+// This is a hack for images not loading in the treapfi:mapbox package.
+.leaflet-container.dark .map-tooltip .close,
+.leaflet-control-layers-toggle,
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out,
+.leaflet-popup-close-button,
+.map-tooltip .close,
+.mapbox-icon {
+  background-image: url('/mapbox-icons@2x.png') !important;
+}

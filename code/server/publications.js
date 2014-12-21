@@ -1,3 +1,3 @@
 Meteor.publish('santaStops', function(){
-  return Stops.find();
+  return Stops.find({"current": true});
 });

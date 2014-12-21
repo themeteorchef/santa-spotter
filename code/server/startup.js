@@ -3,6 +3,29 @@
 * Collection of methods and functions to run on server startup.
 */
 
+Meteor.startup(function(){
+
+  SyncedCron.options = {
+    log: true,
+    collectionName: 'cronHistory',
+    utc: true
+  }
+
+  SyncedCron.add({
+    name: 'Update Santa location 22.',
+    schedule: function(parser) {
+      // parser is a later.parse object
+      return parser.text('every 10 seconds after 11:02 pm');
+    },
+    job: function() {
+      Meteor.call('updateSantaLocation');
+    }
+  });
+
+  SyncedCron.start();
+
+});
+
 /*
 * Generate Test Accounts
 * Creates a collection of test accounts automatically on startup.

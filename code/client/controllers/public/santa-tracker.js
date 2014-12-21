@@ -1,95 +1,54 @@
-Template.santaTracker.rendered = function(){
-  // Wrap our Mapbox setup in a Tracker.autorun() call so that once
-  // Mapbox.loaded() is true, our map is displayed on the template.
+Template.santaMap.rendered = function(){
 
-  Tracker.autorun(function () {
-    var coordinatesArray = [],
-        santaStops       = Stops.find().fetch();
+  var setSantaLocation = function(){
+    var latitude  = Session.get('santaLatitude'),
+        longitude = Session.get('santaLongitude');
 
-    if( santaStops ){
+    // Create a Mapbox LatLng object with our passed values.
+    var location = L.latLng(latitude,longitude);
 
-      for(i=0; i < santaStops.length; i++){
-        coordinatesArray.push( [ santaStops[i].longitude, santaStops[i].latitude ] );
+    // Pan our map to the new location.
+    map.panTo(location);
+
+    // Move our marker to the new location.
+    marker.setLatLng(location);
+  }
+
+  var loadDefaultData = function(){
+    Tracker.autorun(function(){
+      var currentLocation = Stops.findOne({"current": true});
+      if ( currentLocation ) {
+        Session.set('santaLatitude',currentLocation.latitude);
+        Session.set('santaLongitude',currentLocation.longitude);
+        Meteor.setTimeout(function(){
+          setSantaLocation();
+        },500);
       }
+    });
+  }
 
-      if ( Mapbox.loaded() && coordinatesArray.length == 331 ) {
-        // If Mapbox loads as expected, pass it our accessToken, along with the
-        // details of our map. Note: you'll need to setup a map via mapbox.com in
-        // order to get the token (themeteorchef.450d4794). This is unique to an
-        // individual map.
-        L.mapbox.accessToken = "pk.eyJ1IjoidGhlbWV0ZW9yY2hlZiIsImEiOiJmelotbTdrIn0.QmNnWntI9zqeqLrxS6mRkA";
-        var map = L.mapbox.map('map', 'themeteorchef.450d4794', {
-          zoom: 3,
-          minZoom: 3,
-          maxZoom: 6
-        });
+  // If Mapbox is ready to rock, next we need to pass it our access token.
+  L.mapbox.accessToken = "pk.eyJ1IjoidGhlbWV0ZW9yY2hlZiIsImEiOiJmelotbTdrIn0.QmNnWntI9zqeqLrxS6mRkA";
 
-        var geojson = {
-          type: "FeatureCollection",
-          features: [{
-            type: "Feature",
-            properties: {
-              color: "#0099ff",
-              weight: 8,
-              opacity: 0
-            },
-            geometry: {
-              type: "LineString",
-              coordinates: coordinatesArray
-            }
-          }]
-        };
+  // Last but not least, to get our map on screen, we call the L.mapbox.map
+  // function, passing the value for the ID of our map's container (in this
+  // case our map is literally an empty div <div id="map"></div>). We also
+  // pass the Mapbox ID of the map *style* we want to use, along with some
+  // configuration values that we want our map to start up with.
+  var map = L.mapbox.map('map', 'themeteorchef.450d4794', {
+    zoom: 3,
+    minZoom: 3,
+    maxZoom: 6
+  }).on('ready', loadDefaultData());
 
-        // Add this generated geojson object to the map.
-        L.geoJson(geojson, {
-          style: function(feature) {
-            return feature.properties
-          }
-        }).addTo(map);
-
-        // Create a counter with a value of 0.
-        var j = 0;
-
-        // Create a custom icon with Santa's head.
-        var santaIcon = L.icon({
-          iconUrl: '/santa-marker.svg',
-          iconSize: [48,48]
-        });
-
-        // Create a marker and add it to the map.
-        var marker = L.marker([0, 0], {
-          icon: santaIcon
-        }).addTo(map);
-
-        function randomIntFromInterval(min,max){
-          return Math.floor(Math.random()*(max-min+1)+min);
-        }
-
-        // Define function to handle movement of marker.
-        function tick() {
-          // Set the marker to be at the same point as one
-          // of the segments or the line.
-          var latLng = L.latLng(
-            geojson.features[0].geometry.coordinates[j][1],
-            geojson.features[0].geometry.coordinates[j][0]
-          )
-
-          map.panTo(latLng);
-          marker.setLatLng(latLng);
-
-          // Move to the next point of the line
-          // until `j` reaches the length of the array.
-          if (++j < geojson.features[0].geometry.coordinates.length){
-            setTimeout(tick, randomIntFromInterval(2500,5000));
-          }
-        }
-
-        // Start movement of marker.
-        setTimeout(function(){
-          tick();
-        }, 1000);
-
-      } // end if Mapbox.loaded()
-    }
+  // Create a Mapbox icon object to define the source image and size
+  // of our Santa marker.
+  var santaIcon = L.icon({
+    iconUrl: '/santa-marker.svg',
+    iconSize: [48,48]
   });
+
+  var marker = L.marker([0, 0], {
+    icon: santaIcon
+  }).addTo(map);
 }
