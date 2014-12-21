@@ -43,12 +43,14 @@ meteor-platform@1.2.0
 meteor@1.1.3
 minifiers@1.1.2
 minimongo@1.0.5
+mizzao:build-fetcher@0.2.0
 mobile-status-bar@1.0.1
 mongo@1.0.8
 npm-bcrypt@0.7.7
 observe-sequence@1.0.3
 ordered-dict@1.0.1
 particle4dev:sass@0.3.0
+percolate:synced-cron@1.1.0
 pinglamb:bootstrap3@3.2.1
 random@1.0.1
 reactive-dict@1.0.4
@@ -66,6 +68,7 @@ standard-app-packages@1.0.3
 templating@1.0.9
 themeteorchef:jquery-validation@1.13.1
 tracker@1.0.3
+trepafi:mapbox@0.1.0
 ui@1.0.4
 underscore@1.0.1
 url@1.0.2
