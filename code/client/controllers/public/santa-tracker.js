@@ -15,6 +15,9 @@ Template.santaMap.rendered = function(){
   }
 
   var loadDefaultData = function(){
+    // Wrap our findOne and Session.set's in a Tracker.autorun so that when
+    // the necessary data becomes available, we can fire our setSantaLocation()
+    // function and update the map.
     Tracker.autorun(function(){
       var currentLocation = Stops.findOne({"current": true});
       if ( currentLocation ) {
@@ -34,7 +37,9 @@ Template.santaMap.rendered = function(){
   // function, passing the value for the ID of our map's container (in this
   // case our map is literally an empty div <div id="map"></div>). We also
   // pass the Mapbox ID of the map *style* we want to use, along with some
-  // configuration values that we want our map to start up with.
+  // configuration values that we want our map to start up with. Once the map
+  // is setup, we call our loadDefaultData() function to load Santa's current
+  // location onto the map.
   var map = L.mapbox.map('map', 'themeteorchef.450d4794', {
     zoom: 3,
     minZoom: 3,
@@ -48,6 +53,7 @@ Template.santaMap.rendered = function(){
     iconSize: [48,48]
   });
 
+  // Create our marker using our Santa icon and it to the map/
   var marker = L.marker([0, 0], {
     icon: santaIcon
   }).addTo(map);

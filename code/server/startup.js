@@ -5,71 +5,54 @@
 
 Meteor.startup(function(){
 
+  /*
+  * Load Santa's Stops
+  * Pulls in the list of Santa's stops automatically on startup.
+  */
+
+  // Pull in Santa's stops.
+  var stops = SANTA_STOPS;
+
+  // Loop through array of user accounts.
+  for(i=0; i < stops.length; i++){
+    // Check if the user already exists in the DB.
+    var stop      = stops[i],
+        checkStop = Stops.findOne({"name": stop.name});
+
+    // If the stop isn't found, add it to the collection.
+    if( !checkStop ){
+      Stops.insert(stop);
+    }
+  }
+
+  /*
+  * Setup Cron Jobs
+  * Ensure that our clock at the North Pole is in sync with Santa's sleigh.
+  */
+
+  // Ensure that our clock is using UTC time. Think globally!
   SyncedCron.options = {
     log: true,
-    collectionName: 'cronHistory',
+    collectionName: 'santaSchedule',
     utc: true
   }
 
+  // Create two jobs: one to start Santa's journey on time (he'll use the signal
+  // from our app to know when to start) and another to ping his sleigh to get
+  // his current location every few minutes.
+
+  // Start present delivery/location tracking.
   SyncedCron.add({
-    name: 'Update Santa location 22.',
+    name: 'TMC_SANTA_START_001',
     schedule: function(parser) {
-      // parser is a later.parse object
-      return parser.text('every 10 seconds after 11:02 pm');
+      return parser.recur().on(12).month().on(21).dayOfMonth().on('21:50:00').time();
     },
     job: function() {
-      Meteor.call('updateSantaLocation');
+      Meteor.call('startPresentDelivery');
     }
   });
 
+  // Ensure that our Cron jobs fire on schedule so presents are on time!
   SyncedCron.start();
 
 });
-
-/*
-* Generate Test Accounts
-* Creates a collection of test accounts automatically on startup.
-*/
-
-// Create an array of user accounts.
-var users = [
-  { name: "Admin", email: "admin@admin.com", password: "password" }
-]
-
-// Loop through array of user accounts.
-for(i=0; i < users.length; i++){
-  // Check if the user already exists in the DB.
-  var userEmail = users[i].email,
-      checkUser = Meteor.users.findOne({"emails.address": userEmail});
-
-  // If an existing user is not found, create the account.
-  if( !checkUser ){
-    Accounts.createUser({
-      email: userEmail,
-      password: users[i].password,
-      profile: {
-        name: users[i].name
-      }
-    });
-  }
-}
-
-/*
-* Load Santa's Stops
-* Pulls in the list of Santa's stops automatically on startup.
-*/
-
-// Pull in Santa's stops.
-var stops = SANTA_STOPS;
-
-// Loop through array of user accounts.
-for(i=0; i < stops.length; i++){
-  // Check if the user already exists in the DB.
-  var stop      = stops[i],
-      checkStop = Stops.findOne({"name": stop.name});
-
-  // If the stop isn't found, add it to the collection.
-  if( !checkStop ){
-    Stops.insert(stop);
-  }
-}
