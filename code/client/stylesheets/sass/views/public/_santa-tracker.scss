@@ -202,6 +202,10 @@ body {
       text-shadow: 0 0 10px lighten($santa-blue, 10%);
     }
 
+    &:focus {
+      outline: 0;
+    }
+
     &:last-child {
       margin-right: 0px;
     }
@@ -253,4 +257,81 @@ body {
 .map-tooltip .close,
 .mapbox-icon {
   background-image: url('/mapbox-icons@2x.png') !important;
+}
+
+.modal-backdrop {
+  background: $santa-blue;
+
+  &.in {
+    opacity: 0.8;
+  }
+}
+
+.santa-modal .modal-content {
+  box-shadow: 0 0 10px darken($santa-blue, 20%);
+  border: 1px solid darken($santa-blue, 15%);
+  border-radius: 3px;
+}
+
+.santa-modal .modal-body {
+  @extend %clearfix;
+  border-radius: 3px;
+  padding: 30px;
+}
+
+.santa-modal .close {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: darken($santa-blue, 40%);
+  padding: 10px;
+  opacity: 1;
+  color: #fff;
+  text-shadow: none;
+  border-radius: 40px;
+
+  .times-icon {
+    position: relative;
+    top: -2px;
+  }
+
+  &:hover {
+    background: darken($santa-blue, 30%);
+  }
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.santa-modal .question-icon {
+  float: left;
+  width: 30%;
+
+  img {
+    max-width: 100%;
+  }
+}
+
+.santa-modal .question-body {
+  float: right;
+  width: 65%;
+  padding-left: 45px;
+}
+
+.santa-modal .question h3 {
+  margin: 0 0 15px;
+  color: $santa-blue;
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.santa-modal .question p {
+  color: #666;
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
 }

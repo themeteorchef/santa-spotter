@@ -1,13 +1,35 @@
 <template name="learnAboutSanta">
+  {{>santaModal}}
   <div class="learn-about-santa">
     <p class="title">Learn About Santa</p>
     <p class="tips marquee">
-      <a href="#">How does Santa Claus get around the whole world in one night?</a>
-      <a href="#">How does Santa Claus deliver presents to kids without a chimney?</a>
-      <a href="#">How does Santa Claus feel about Florida's "stand your ground" law?</a>
-      <a href="#">Do Santa's reindeer ever get tired?</a>
-      <a href="#">What do Santa's elves do after Christmas?</a>
-      <a href="#">How come Santa Claus doesn't get fatter from all of the milk and cookies he eats?</a>
+      <a href="#" data-toggle="modal" data-target="#santaModal" data-id="whole-world">How does Santa Claus get around the whole world in one night?</a>
+      <a href="#" data-toggle="modal" data-target="#santaModal" data-id="chimney">How does Santa Claus deliver presents to kids without a chimney?</a>
+      <a href="#" data-toggle="modal" data-target="#santaModal" data-id="florida">How does Santa Claus feel about Florida's "stand your ground" law?</a>
+      <a href="#" data-toggle="modal" data-target="#santaModal" data-id="reindeer">Do Santa's reindeer ever get tired?</a>
+      <a href="#" data-toggle="modal" data-target="#santaModal" data-id="mail-order">What do Santa's elves do after Christmas?</a>
+      <a href="#" data-toggle="modal" data-target="#santaModal" data-id="cookies">How come Santa Claus doesn't get fatter from all of the milk and cookies he eats?</a>
     </p>
+  </div>
+</template>
+
+<template name="santaModal">
+  <div class="modal santa-modal fade" id="santaModal" tabindex="-1" role="dialog" aria-labelledby="santaModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal"><span class="times-icon" aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <div class="question">
+            <div class="question-icon">
+              <img src="{{currentQuestion.icon}}">
+            </div>
+            <div class="question-body">
+              <h3 class="question-title">{{currentQuestion.question}}</h3>
+              {{{currentQuestion.answer}}}
+            </div>
+          </div> <!-- end .question -->
+        </div>
+      </div>
+    </div>
   </div>
 </template>
