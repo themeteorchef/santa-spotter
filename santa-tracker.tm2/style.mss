@@ -12,15 +12,15 @@ maintain or invert existing value (light to dark) scale.
 */
 
 // Color palette //
-@road:  #fff;
-@land:  #eee;
+@road:  #2e93c4;
+@land:  #2282b0;
 
-@fill1: #fff;
-@fill2: #bbb;
-@fill3: #777;
-@fill4: #000;
+@fill1: #2e93c4;
+@fill2: #2e93c4;
+@fill3: #2e93c4;
+@fill4: #2e93c4;
 
-@text: #777;
+@text: #fff;
 
 Map { background-color: @land; }
 
@@ -95,17 +95,13 @@ Map { background-color: @land; }
   ::fill {
     // a fill and overlay comp-op lighten the polygon-
     // fill from ::shadow.
-    polygon-fill: @land;
-    comp-op: soft-light;
-    // blurring reveals the polygon fill from ::shadow around
-    // the edges of the water
-    image-filters: agg-stack-blur(10,10);
+    polygon-fill: #29b6f6;
   }
 }
 
 // Water color is calculated by sampling the resulting color from
 // the soft-light comp-op in the #water layer style above. 
-@water: #d1d1d1;
+@water: #2e93c4;
 
 #waterway {
   [type='river'],
