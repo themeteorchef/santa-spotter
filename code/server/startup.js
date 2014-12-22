@@ -45,7 +45,7 @@ Meteor.startup(function(){
   SyncedCron.add({
     name: 'TMC_SANTA_START_001',
     schedule: function(parser) {
-      return parser.recur().on(12).month().on(21).dayOfMonth().on('21:50:00').time();
+      return parser.recur().on(12).month().on(21).dayOfMonth().on('18:52:00').time();
     },
     job: function() {
       Meteor.call('startPresentDelivery');

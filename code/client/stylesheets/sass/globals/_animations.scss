@@ -41,18 +41,18 @@
 }
 
 @-webkit-keyframes marquee {
-  0%   { text-indent: 2500px; }
-  100% { text-indent: -2500px; }
+  0%   { text-indent: 3000px; }
+  100% { text-indent: -3000px; }
 }
 @-moz-keyframes marquee {
-  0%   { text-indent: 2500px; }
-  100% { text-indent: -2500px; }
+  0%   { text-indent: 3000px; }
+  100% { text-indent: -3000px; }
 }
 @-o-keyframes marquee {
-  0%   { text-indent: 2500px; }
-  100% { text-indent: -2500px; }
+  0%   { text-indent: 3000px; }
+  100% { text-indent: -3000px; }
 }
 @keyframes marquee {
-  0%   { text-indent: 2500px; }
-  100% { text-indent: -2500px; }
+  0%   { text-indent: 3000px; }
+  100% { text-indent: -3000px; }
 }

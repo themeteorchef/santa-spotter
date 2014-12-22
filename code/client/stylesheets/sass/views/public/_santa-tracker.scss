@@ -1,4 +1,6 @@
 $santa-blue: #3ec4f0;
+$santa-stack: "Cherry Swash", cursive;
+$display-stack: "Helvetica Neue", Helvetica, Arial, Sans-serif;
 
 body {
   background: #d1d1d1;
@@ -7,47 +9,98 @@ body {
 .santa-header,
 .santa-footer {
   @extend %clearfix;
-  background: #3ec4f0;
-  padding: 20px;
+  @include linear-gradient($santa-blue, darken($santa-blue,15%));
 
   p {
     margin: 0;
-    font-family: "Roboto Slab";
+    font-family: $santa-stack;
   }
+}
+
+.santa-header {
+  border-bottom: 1px solid darken($santa-blue, 25%);
+  z-index: 500;
+  text-align: center;
+  padding: 20px 10px 20px 20px;
 }
 
 .santa-header p {
   float: left;
   color: #fff;
-  font-size: 20px;
+  text-shadow: 0 1px 1px darken($santa-blue, 25%);
+  font-size: 22px;
   line-height: 20px;
   margin: 0;
   position: relative;
   top: -2px;
-  font-weight: 300;
+  font-weight: 100;
+  letter-spacing: 0.05em;
 }
 
-.connection-status {
-  @extend %clearfix;
-  position: absolute;
-  top: 12px;
-  right: 10px;
+.santa-footer {
+  height: 60px;
+  padding: 20px 20px 20px 10px;
+}
+
+.santa-footer p {
+  float: right;
+  font-size: 15px;
+}
+
+.santa-header .current-location {
+  float: right;
+}
+
+.santa-header .current-location p {
+  display: inline-block;
+  position: relative;
+  top: -9px;
+  float: none;
+  text-align: center;
+  background: rgba(0,0,0,0.7);
+  padding: 10px 15px 9px;
+  color: $santa-blue;
+  text-shadow: 0px 0px 10px $santa-blue;
+  font-family: $display-stack;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 12px;
+  -webkit-font-smoothing: antialiased;
   border-radius: 3px;
-  background: #eee;
-  padding: 10px 5px 5px 15px;
+
+  span {
+    color: #63d95e;
+    text-shadow: 0 0 10px #63d95e;
+  }
+}
+
+.santa-footer .connection-status {
+  @extend %clearfix;
+  float: left;
+  position: relative;
+  top: -10px;
+  border-radius: 3px;
+  background: rgba(0,0,0,0.7);
+  padding: 12px 6px 12px 15px;
 
   p {
-    color: #555;
-    font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    color: $santa-blue;
+    font-family: $display-stack;
     text-transform: uppercase;
     font-weight: bold;
     font-size: 12px;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 0px 0px 10px $santa-blue;
   }
 
   .indicator {
-    padding: 5px 10px;
+    padding: 5px 10px 5px;
     margin-left: 10px;
     border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: $display-stack;
+    text-shadow: none !important;
   }
 
   .indicator.nice {
@@ -62,8 +115,9 @@ body {
   }
 
   .indicator.naughty {
+    color: #fff;
     background: #e02f2d;
-    color: darken(#e02f2d, 20%);
+    text-shadow: none !important;
     border: 1px solid darken(#e02f2d, 10%);
     -webkit-animation: naughtyBeacon 1s infinite;
     -moz-animation: naughtyBeacon 1s infinite;
@@ -71,13 +125,19 @@ body {
     -o-animation: naughtyBeacon 1s infinite;
     animation: naughtyBeacon 1s infinite;
   }
+
+  .indicator.unknown {
+    background: #eee;
+    color: #333;
+  }
 }
 
-.santa-tips {
-  background: darken($santa-blue, 20%);
-  padding: 20px;
+.learn-about-santa {
+  background: #0c3946;
+  padding: 20px 0;
   position: absolute;
-  left: 0; right: 0;
+  left: 0;
+  right: 0;
   bottom: 60px;
   color: #fff;
   overflow-x: hidden;
@@ -87,15 +147,22 @@ body {
   }
 
   .title {
+    display: none;
     position: absolute;
     left: 0px;
     top: 0px;
     float: left;
     margin: 0;
-    font-size: 16px;
-    font-family: "Roboto Slab";
-    font-weight: 300;
-    background: darken($santa-blue, 30%);
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    font-family: $display-stack;
+    font-weight: 400;
+    text-transform: uppercase;
+    text-shadow: 0 1px 1px darken($santa-blue, 35%);
+    border-top: 1px solid darken($santa-blue, 25%);
+    border-bottom: 1px solid darken($santa-blue, 25%);
+    @include linear-gradient($santa-blue, darken($santa-blue,15%));
+    box-shadow: inset 0 1px 0 lighten($santa-blue, 10%);
     height: 60px;
     padding: 18px 20px 0 20px;
   }
@@ -120,13 +187,19 @@ body {
   }
 
   .tips a {
-    color: #fff;
+    color: #63d95e;
+    text-shadow: 0 0 10px #63d95e;
     padding-left: 30px;
-    text-decoration: underline;
+    text-decoration: none;
     padding-bottom: 5px;
+    font-family: $display-stack;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12px;
 
     &:hover {
       color: lighten($santa-blue, 10%);
+      text-shadow: 0 0 10px lighten($santa-blue, 10%);
     }
 
     &:last-child {
@@ -149,13 +222,18 @@ body {
 
   a {
     color: darken($santa-blue, 30%);
-    border-bottom: 1px solid darken($santa-blue, 15%);
+    border-bottom: 1px solid darken($santa-blue, 20%);
+  }
+
+  a:hover {
+    text-decoration: none;
+    color: lighten($santa-blue, 35%);
   }
 }
 
 #map {
   position: absolute;
-  top: 60px;
+  top: 61px;
   bottom: 120px;
   width: 100%;
 }
