@@ -1,3 +1,10 @@
 <template name="santaMap">
+  <div class="santa-north-pole {{#if isNorthPole}}active{{/if}}">
+    {{#if isSantaFinished}}
+      <h3>Santa is back at the North Pole for the year! Merry Christmas :)</h3>
+    {{else}}
+      <h3>Santa hasn't left the North Pole yet! Hang in there :)</h3>
+    {{/if}}
+  </div>
   <div id='map'></div>
 </template>

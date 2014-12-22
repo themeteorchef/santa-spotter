@@ -12,7 +12,7 @@ Meteor.startup(function(){
   for(i=0; i < stops.length; i++){
     // Check if the user already exists in the DB.
     var stop      = stops[i],
-        checkStop = Stops.findOne({"name": stop.name});
+        checkStop = Stops.findOne({"order": stop.order});
 
     // If the stop isn't found, add it to the collection.
     if( !checkStop ){
@@ -40,7 +40,7 @@ Meteor.startup(function(){
   SyncedCron.add({
     name: 'TMC_SANTA_START_001',
     schedule: function(parser) {
-      return parser.recur().on(12).month().on(21).dayOfMonth().on('22:08:00').time();
+      return parser.recur().on(12).month().on(22).dayOfMonth().on('20:27:00').time();
     },
     job: function() {
       Meteor.call('startPresentDelivery');

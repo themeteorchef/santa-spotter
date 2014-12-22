@@ -5,7 +5,7 @@ Meteor.methods({
     SyncedCron.add({
       name: 'Deliver Presents',
       schedule: function(parser) {
-        return parser.text('every 10 seconds');
+        return parser.text('every 5 min');
       },
       job: function() {
         Meteor.call('updateSantaLocation');
@@ -21,7 +21,7 @@ Meteor.methods({
         csIndex     = currentStop.order,
         nextStop    = Stops.findOne({"order": csIndex + 1});
 
-    if ( csIndex != 333 ) {
+    if ( nextStop ) {
       Stops.update(currentStop._id,{
         $set: {
           "current": false

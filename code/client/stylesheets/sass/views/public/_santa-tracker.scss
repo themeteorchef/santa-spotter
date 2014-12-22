@@ -6,6 +6,29 @@ body {
   background: #d1d1d1;
 }
 
+.santa-north-pole {
+  position: fixed;
+  top: 61px;
+  right: 0;
+  background: red;
+  z-index: 5000;
+  -webkit-transition: all .3s ease-in-out;
+  z-index: 5000;
+  opacity: 0;
+  padding: 10px 20px;
+  color: #fff;
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 18px;
+  }
+
+  &.active {
+    opacity: 1;
+  }
+}
+
 .santa-header,
 .santa-footer {
   @extend %clearfix;
