@@ -19,7 +19,7 @@ Template.santaMap.rendered = function(){
     // the necessary data becomes available, we can fire our setSantaLocation()
     // function and update the map.
     Tracker.autorun(function(){
-      var currentLocation = Stops.findOne({"current": true});
+      var currentLocation = Stops.findOne({"current": true}, {fields: {"longitude": 1, "latitude": 1} });
       if ( currentLocation ) {
         Session.set('santaLatitude',currentLocation.latitude);
         Session.set('santaLongitude',currentLocation.longitude);
@@ -40,7 +40,7 @@ Template.santaMap.rendered = function(){
   // configuration values that we want our map to start up with. Once the map
   // is setup, we call our loadDefaultData() function to load Santa's current
   // location onto the map.
-  var map = L.mapbox.map('map', 'themeteorchef.450d4794', {
+  var map = L.mapbox.map('map', 'themeteorchef.7110edb8', {
     zoom: 3,
     minZoom: 3,
     maxZoom: 6
@@ -57,4 +57,28 @@ Template.santaMap.rendered = function(){
   var marker = L.marker([0, 0], {
     icon: santaIcon
   }).addTo(map);
+
+  // Disable dragging on our map so Santa stays in the spotlight :)
+  map.dragging.disable();
 }
+
+Template.santaMap.helpers({
+
+  isNorthPole: function(){
+    var getLocation = Stops.findOne({"current": true}, {fields: {"name": 1, "current": 1, "order": 1}});
+    if ( getLocation.name == "The North Pole" && getLocation.order == 1 ) {
+      Session.set('isSantaFinished', false);
+      return true;
+    } else if ( getLocation.name == "The North Pole" && getLocation.order == 333 ) {
+      Session.set('isSantaFinished', true);
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  isSantaFinished: function(){
+    return Session.get('isSantaFinished');
+  }
+
+});
