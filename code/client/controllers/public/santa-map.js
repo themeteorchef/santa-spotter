@@ -1,9 +1,6 @@
 Template.santaMap.rendered = function(){
 
-  var setSantaLocation = function(){
-    var latitude  = Session.get('santaLatitude'),
-        longitude = Session.get('santaLongitude');
-
+  var setSantaLocation = function(latitude,longitude){
     // Create a Mapbox LatLng object with our passed values.
     var location = L.latLng(latitude,longitude);
 
@@ -21,10 +18,8 @@ Template.santaMap.rendered = function(){
     Tracker.autorun(function(){
       var currentLocation = Stops.findOne({"current": true}, {fields: {"longitude": 1, "latitude": 1} });
       if ( currentLocation ) {
-        Session.set('santaLatitude',currentLocation.latitude);
-        Session.set('santaLongitude',currentLocation.longitude);
         Meteor.setTimeout(function(){
-          setSantaLocation();
+          setSantaLocation(currentLocation.latitude,currentLocation.longitude);
         },500);
       }
     });
@@ -57,9 +52,6 @@ Template.santaMap.rendered = function(){
   var marker = L.marker([0, 0], {
     icon: santaIcon
   }).addTo(map);
-
-  // Disable dragging on our map so Santa stays in the spotlight :)
-  map.dragging.disable();
 }
 
 Template.santaMap.helpers({
