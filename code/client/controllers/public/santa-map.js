@@ -26,7 +26,7 @@ Template.santaMap.rendered = function(){
   }
 
   // If Mapbox is ready to rock, next we need to pass it our access token.
-  L.mapbox.accessToken = "pk.eyJ1IjoidGhlbWV0ZW9yY2hlZiIsImEiOiJmelotbTdrIn0.QmNnWntI9zqeqLrxS6mRkA";
+  L.mapbox.accessToken = "<Enter Your Mapbox Public Key Here>";
 
   // Last but not least, to get our map on screen, we call the L.mapbox.map
   // function, passing the value for the ID of our map's container (in this
@@ -35,7 +35,7 @@ Template.santaMap.rendered = function(){
   // configuration values that we want our map to start up with. Once the map
   // is setup, we call our loadDefaultData() function to load Santa's current
   // location onto the map.
-  var map = L.mapbox.map('map', 'themeteorchef.7110edb8', {
+  var map = L.mapbox.map('map', '<username>.<mapId>', {
     zoom: 3,
     minZoom: 3,
     maxZoom: 6
