@@ -38,9 +38,9 @@ Meteor.startup(function(){
 
   // Start present delivery/location tracking.
   SyncedCron.add({
-    name: 'TMC_SANTA_START_001',
+    name: 'start_santa_present_delivery',
     schedule: function(parser) {
-      return parser.recur().on(12).month().on(22).dayOfMonth().on('20:27:00').time();
+      return parser.recur().on(12).month().on(24).dayOfMonth().on('10:55:00').time();
     },
     job: function() {
       Meteor.call('startPresentDelivery');
