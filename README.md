@@ -5,7 +5,7 @@ Santa Claus is coming down from the North Pole to deliver presents to kids all o
 
 [Read on The Meteor Chef](http://themeteorchef.com/recipes/santa-tracker)  
 
-[Demo the Recipe](http://themeteorchef-004-demo.meteor.com)  
+[Demo the Recipe](http://tmc-004-demo.meteor.com)  
 
 [Download the Source](https://github.com/themeteorchef/santa-tracker/archive/master.zip)
 
