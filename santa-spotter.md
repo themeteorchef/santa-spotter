@@ -6,12 +6,14 @@ After December 25th, we won't be tracking Santa any longer, so the demo will be 
 In order to get Santa moving on the map, we need to make sure we have a way to load a map into our interface as well as a way to "time" his movements. Let's take a look at what we need to get going.
 
 <p class="block-header">Terminal</p>
+
 ```.lang-bash
 meteor add trepafi:mapbox
 ```
 We'll make use of the [`trepafi:mapbox`](https://atmospherejs.com/trepafi/mapbox) package to gain access to the [Mapbox.js API (at v2.1.4)](https://www.mapbox.com/mapbox.js/api/v2.1.4/). This is what we'll use to actually generate our map and keep track of Santa's location.
 
 <p class="block-header">Terminal</p>
+
 ```.lang-bash
 meteor add percolate:synced-cron
 ```
@@ -38,6 +40,7 @@ In order to track Santa, we'll need to pull from some sort of data set. Because 
 First, we need to populate our database with Santa's pre-approved sample data.
 
 <p class="block-header">/server/_santa-stops.js</p>
+
 ```.lang-javascript
 SANTA_STOPS = [
   {
@@ -61,6 +64,7 @@ SANTA_STOPS = [
 Our dataset is simply an array of objects (stops) assigned to a global `SANTA_STOPS` variable. Note that the structure of our data calls for five keys, all of which should be self explanatory except for `current`. The `current` key is what we will use to set Santa's current position (remember, our demo is hooked up to Santa's API but locally we have to fudge it). Let's take a look at how to get our data _into_ the database.
 
 <p class="block-header">/server/startup.js</p>
+
 ```.lang-javascript
 Meteor.startup(function(){
   var stops = SANTA_STOPS;
@@ -86,6 +90,7 @@ Fairly spartan. All we're doing here is assigning our global `SANTA_STOPS` varia
 So our data is loaded up, but we need to control the flow a little bit. To make sure we're sending the right pieces down the wire, we need to _publish_ it from the server and _subscribe_ to it on the client.
 
 <p class="block-header">/server/publications.js</p>
+
 ```.lang-javascript
 Meteor.publish('santaStops', function(){
   return Stops.find({"current": true}, {fields: {
@@ -104,6 +109,7 @@ Very simple. Here we define our publication as `santaStops`, returning the resul
 Busted! You're right. I've done this here as a reminder that it's important to always consider _what_ data you're sending down the wire. Even though we will make use of everything here, being explicit means we can avoid unwanted data publishing mistakes later. Let's see how we're making use of our publication over on the client.
 
 <p class="block-header">/client/routes/routes-public.js</p>
+
 ```.lang-javascript
 Router.route('index', {
   path: '/',
@@ -126,6 +132,7 @@ Before we start tracking Santa, we'll need to setup our map to actually plot _wh
 Getting our template setup is ridiculously easy. First, we need to create a template that includes a `<div>` where we can tell Mapbox to load our map:
 
 <p class="block-header">/client/views/_santa-map.html</p>
+
 ```.lang-markup
 <template name="santaMap">
   <div class="santa-north-pole {{#if isNorthPole}}active{{/if}}">
@@ -144,6 +151,7 @@ So we've got a few things going on here. First, we want to pay attention to the 
 In addition to our map `<div>`, we've also included a div classed with `santa-north-pole` where we'll display two `<h3>` tags that contain a message about Santa's current status. Here, we're making use of Handlebar's `{{if}}` and `{{else}}` template conditionals to look at two template helpers we've setup: `{{isNorthPole}}` and `{{isSantaFinished}}`.
 
 <p class="block-header">/client/controllers/public/santa-map.js</p>
+
 ```.lang-javascript
 Template.santaMap.helpers({
 
@@ -186,6 +194,7 @@ Now that we have a place for our map to go (our `<div id="map"></div>`), we need
 We'll start by wrapping all of our Mapbox configuration work in the `rendered` callback of our `santaMap` template:
 
 <p class="block-header">/client/controllers/public/santa-map.js</p>
+
 ```.lang-javascript
 Template.santaMap.rendered = function(){
   L.mapbox.accessToken = "<Obtain your access token by signing up at http://mapbox.com.>";
@@ -214,6 +223,7 @@ Next, we actually define our map using `L.mapbox.map` and pass a few arguments. 
 Lastly, we make use of the `.on('ready')` method provided by mapbox so that we can call a callback function once our map is loaded. Let's take a look at the `loadDefaultData()` function we're calling here to see what it's doing for us.
 
 <p class="block-header">/client/controllers/public/santa-map.js</p>
+
 ```.lang-javascript
 var loadDefaultData = function(){
   Tracker.autorun(function(){
@@ -238,6 +248,7 @@ So, our data changes in two ways: first, when the page loads and data is assigne
 Okay. We're updating when our data changes, and that's great, but what are we actually _doing_ with that data? Pay attention to our call to `setSantaLocation()` above. We're passing two values: the returned `latitude` and `longitude` from Santa's `currentLocation`. Let's take a look at this function to see how this all ties together.
 
 <p class="block-header">/client/controllers/public/santa-map.js</p>
+
 ```.lang-javascript
 var setSantaLocation = function(latitude,longitude){
   var location = L.latLng(latitude,longitude);
@@ -251,6 +262,7 @@ Pretty simple, but _very_ important. Taking our passed `latitude` and `longitude
 Back in our Mapbox configuration, recall that we skipped over a few functions:
 
 <p class="block-header">/client/controllers/public/santa-map.js</p>
+
 ```.lang-javascript
 var santaIcon = L.icon({
   iconUrl: '/santa-marker.svg',
@@ -276,6 +288,7 @@ Now, we create our marker passing two values: `[0,0]`, the starting point for ou
 Okay, so we've got our data loaded and our map setup, but how do we actually _track_ Santa? Recall that Santa is only letting us hook our _demo_ up to the sleigh's API, so we need to come up with a way to _simulate_ Santa's movement locally. We'll do this in two parts: first by defining a pair of server side methods for "moving" Santa, and creating some [cron jobs](http://en.wikipedia.org/wiki/Cron) to automate the firing of those methods.
 
 <p class="block-header">/server/santa-timer.js</p>
+
 ```.lang-javascript
 Meteor.methods({
   updateSantaLocation: function(){
@@ -319,6 +332,7 @@ Lastly, we call to a function `SyncedCron.remove()` passing `'Deliver Presents'`
 A little further up in our file we'll see _another_ method being defined `startPresentDelivery`.
 
 <p class="block-header">/server/santa-timer.js</p>
+
 ```.lang-javascript
 Meteor.methods({
   startPresentDelivery: function(){
@@ -342,6 +356,7 @@ Instead of heating a house, here we're creating a job called `Deliver Presents` 
 Notice that we're wrapping this code in its own method. Why? Well, we're actually going to call this using [_another cron job_](http://youtu.be/tXVIYAY7Q7g?t=12s).
 
 <p class="block-header">/server/startup.js</p>
+
 ```.lang-javascript
 Meteor.startup(function(){
   SyncedCron.options = {
@@ -386,6 +401,7 @@ Before we call this thing a success, the last thing we need to do is tell our cr
 Alright! So just a few more things and we're ready to rock. First up is adding a little touch to our interface and display Santa's current location (visible in the top right-hand side of our demo). In order to do this, we're going to setup a template and a controller.
 
 <p class="block-header">/client/views/_santa-header.html</p>
+
 ```.lang-markup
 <template name="santaHeader">
   <header class="santa-header">
@@ -400,6 +416,7 @@ Alright! So just a few more things and we're ready to rock. First up is adding a
 Pretty simple. The part we want to pay attention to is the `<div class="current-location">` area. Here, we simply output a template helper `{{currentLocation}}` to display the City/Country value of where Santa is currently visiting. Let's hop over to our controller to see how we're getting the value.
 
 <p class="block-header">/client/controllers/public/santa-header.js</p>
+
 ```.lang-javascript
 Template.santaHeader.helpers({
   currentLocation: function(){
@@ -422,6 +439,7 @@ One more thing before we call this rock and roll: sleigh connection status.
 Last but not least, because our demo is relying on a connection to Santa's sleigh, it would be helpful to let our users know whether that connection exists. Displayed in the bottom right-hand corner of our application, we have a nice little beacon that reads `NICE` when we have a solid connection to Santa's sleigh, and `NAUGHTY` when we don't. [Oh my](http://media.giphy.com/media/iQAndLjnfqpS8/giphy.gif)!
 
 <p class="block-header">/client/views/_santa-footer.html</p>
+
 ```.lang-markup
 <template name="santaFooter">
   <header class="santa-footer">
@@ -435,6 +453,7 @@ Last but not least, because our demo is relying on a connection to Santa's sleig
 Almost identical to our pattern above for displaying Santa's location. The only difference here is that we're using our helper `{{sleighConnectionStatus}}` to not only display the status but also to add a class to our `<span class="indiciator">` tag so that we can style things up for the appropriate state. Nifty.
 
 <p class="block-header">/client/controllers/public/santa-footer.js</p>
+
 ```.lang-javascript
 Template.santaFooter.helpers({
   sleighConnectionStatus: function(){
