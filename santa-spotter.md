@@ -1,8 +1,11 @@
 Before we get started, I should note that this recipe is a little different than what we've covered so far. Being that Christmas is only a few days away, it seemed like a fun opportunity to create something that was a little more "seasonal." The techniques you'll learn will apply indefinitely, but keep in mind that **the demo we'll create is designed to be real time**.
 
-After December 25th, we won't be tracking Santa any longer, so the demo will be more or less idle. If you read this after Christmas, keep in mind that everything is relevant, but if you want to see everything in action, make sure to [clone a copy of the source](https://github.com/themeteorchef/santa-tracker/) and adjust the timing of the cron jobs (more on this later) to get Santa moving! If you get stuck, you're more than welcome to post a comment here or send me an email to [help@themeteorchef.com](mailto:help@themeteorchef.com).
+After December 25th, we won't be tracking Santa any longer, so the demo will be more or less idle. If you read this after Christmas, keep in mind that everything is relevant, but if you want to see everything in action, make sure to [clone a copy of the source](https://github.com/themeteorchef/santa-tracker/) and adjust the timing of the cron jobs (more on this later) to get Santa moving!
+
+If you get stuck, you're more than welcome to post a comment here or send me an email to [help@themeteorchef.com](mailto:help@themeteorchef.com).
 
 ### Getting Started
+
 In order to get Santa moving on the map, we need to make sure we have a way to load a map into our interface as well as a way to "time" his movements. Let's take a look at what we need to get going.
 
 <p class="block-header">Terminal</p>
@@ -10,6 +13,7 @@ In order to get Santa moving on the map, we need to make sure we have a way to l
 ```.lang-bash
 meteor add trepafi:mapbox
 ```
+
 We'll make use of the [`trepafi:mapbox`](https://atmospherejs.com/trepafi/mapbox) package to gain access to the [Mapbox.js API (at v2.1.4)](https://www.mapbox.com/mapbox.js/api/v2.1.4/). This is what we'll use to actually generate our map and keep track of Santa's location.
 
 <p class="block-header">Terminal</p>
@@ -17,6 +21,7 @@ We'll make use of the [`trepafi:mapbox`](https://atmospherejs.com/trepafi/mapbox
 ```.lang-bash
 meteor add percolate:synced-cron
 ```
+
 Because we need to stay in sync with Santa's sleigh, we'll need the ability to fire functions _at a specific time_. The [`percolate:synced-cron`](https://atmospherejs.com/percolate/synced-cron) package will allow us to setup a pair of "jobs" that can be run at a later time and help to track Santa.
 
 <div class="note">
@@ -25,15 +30,16 @@ Because we need to stay in sync with Santa's sleigh, we'll need the ability to f
 </div>
 
 #### Signing Up For Mapbox
-The service that we'll use for handling our map, Mapbox, requires that you sign up for an account. This is because Mapbox hosts the actual style for our map and we request it via an API key (explained below). To get setup with Mapbox, header over to [their home page](https://www.mapbox.com/) and click "Sign up" in the top right. Also, make sure to [download a copy of their desktop application Mapbox Studio](https://www.mapbox.com/mapbox-studio). This is what you will use to style your map.
 
-Once you've [downloaded Studio and setup a map](https://www.mapbox.com/mapbox-studio), you can publish it to the Mapbox website by selecting the "Settings" option from the left-hand menu of the application (this is the desktop app, here) and clicking the blue "Upload to Mapbox" button. Note: the Map ID they display is the same Map ID that you'll make use of below when we configure Mapbox, so jot it down.
+The service that we'll use for handling our map, Mapbox, requires that you sign up for an account. This is because Mapbox hosts the actual style for our map and we request it via an API key (explained below). To get set up with Mapbox, header over to [their home page](https://www.mapbox.com/) and make an account. Also, make sure to [download a copy of their desktop application Mapbox Studio](https://www.mapbox.com/mapbox-studio). This is what you will use to style your map.
 
-Make sure to reference all of [Mapbox's documentation](https://www.mapbox.com/mapbox.js/api/v2.1.4/). We'll skim the surface here but they have a lot to offer, so spend some time poking around.
+Once you've [downloaded Studio and set up a map](https://www.mapbox.com/mapbox-studio), you can publish it to the Mapbox website by selecting the "Settings" option from the left-hand menu of the application (this is the desktop app, here) and clicking the blue "Upload to Mapbox" button. The Map ID they display is the same Map ID that you'll make use of below when we configure Mapbox, so jot it down.
+
+Make sure to reference all of [Mapbox's documentation](https://www.mapbox.com/mapbox.js/api/v2.1.4/). We'll skim the surface here, but they have a lot to offer, so spend some time poking around.
 
 ### Setting Up Santa's Location Data
 
-In order to track Santa, we'll need to pull from some sort of data set. Because Santa Claus is somewhat of a security nut (fair, considering his profile and all), he's asked that we use some _sample_ data in our recipe. We've hooked up the demo to his Sleigh's API, but what you'll see here is merely an example of what he's beaming down to us. Cool? Cool. Alright, how do we find out where santa is?
+In order to track Santa, we'll need to pull from some sort of data set. Because Santa Claus is somewhat of a security nut (fair, considering his profile and all), he's asked that we use some _sample_ data in our recipe. We've hooked up the demo to his Sleigh's API, but what you'll see here is merely an example of what he's beaming down to us. Cool? Cool. All right, how do we find out where Santa is?
 
 #### Loading Our Data
 
@@ -85,7 +91,7 @@ Fairly spartan. All we're doing here is assigning our global `SANTA_STOPS` varia
   <p>We're pulling from the order value here because we'll be checking for which of our stops is the North Pole later on. Depending on the nature of the data in your own application (i.e. if your data is dynamic), you'll probably want to look at a unique ID value or a unique name value. <a href="http://i.imgur.com/IW8simF.gif">The more you know</a>.</p>
 </div>
 
-### Publishing & Subscribing to Our Data
+### Publishing and Subscribing to Our Data
 
 So our data is loaded up, but we need to control the flow a little bit. To make sure we're sending the right pieces down the wire, we need to _publish_ it from the server and _subscribe_ to it on the client.
 
@@ -104,7 +110,7 @@ Meteor.publish('santaStops', function(){
 });
 ```
 
-Very simple. Here we define our publication as `santaStops`, returning the result of a `find()` lookup for documents where `current` is equal to `true`. Pay attention! We are _not_ returning every single documet (Santa stop) in our database: only the one we need. In addition to that, we're also specifying only the fields we need. But wait...you've specified every field the object would have?
+Very simple. Here we define our publication as `santaStops`, returning the result of a `find()` lookup for documents where `current` is equal to `true`. Pay attention! We are _not_ returning every single document (Santa stop) in our database: only the one we need. In addition to that, we're also specifying only the fields we need. But wait...you've specified every field the object would have?
 
 Busted! You're right. I've done this here as a reminder that it's important to always consider _what_ data you're sending down the wire. Even though we will make use of everything here, being explicit means we can avoid unwanted data publishing mistakes later. Let's see how we're making use of our publication over on the client.
 
@@ -129,7 +135,8 @@ Before we start tracking Santa, we'll need to setup our map to actually plot _wh
 [Mapbox](http://mapbox.com) is a library and series of tools that allow you to design and implement custom maps. It relies on data from OpenStreetMap and other sources to create really slick, interactive maps. We're going to use Mapbox to do two things: create our world map and plot Santa _on that map_. The first thing we need to do, then, is initialize our map and get it on screen.
 
 #### Creating a Template to House Our Map
-Getting our template setup is ridiculously easy. First, we need to create a template that includes a `<div>` where we can tell Mapbox to load our map:
+
+Getting our template set up is ridiculously easy. First, we need to create a template that includes a `<div>` where we can tell Mapbox to load our map:
 
 <p class="block-header">/client/views/_santa-map.html</p>
 
@@ -152,7 +159,8 @@ In addition to our map `<div>`, we've also included a div classed with `santa-no
 
 <p class="block-header">/client/controllers/public/santa-map.js</p>
 
-```.lang-javascript
+```
+.lang-javascript
 Template.santaMap.helpers({
 
   isNorthPole: function(){
@@ -177,7 +185,7 @@ Template.santaMap.helpers({
 
 This helper allows us to check whether Santa has left his workshop to deliver presents, or, if he's all done and back at the North Pole. We do this because both the first _and_ last stop on Santa's list is the North Pole. Using a helper, `isNothPole` above, we can determine _which_ North Pole stop we're at.
 
-First, we grab Santa's current location by looking at the `Stops` collection we setup earlier. Note: we're doing a lookup on the collection for one record that has its `current` key equal to true. We do this because when we setup our timing for Santa's location, we'll be changing the state of the `current` key to mark Santa's current position.
+First, we grab Santa's current location by looking at the `Stops` collection we set up earlier. Note: we're doing a lookup on the collection for one record that has its `current` key equal to true. We do this because when we setup our timing for Santa's location, we'll be changing the state of the `current` key to mark Santa's current position.
 
 To toggle our `{{if isNorthPole}}` statement accordingly (that adds an `.active` class to our `santa-north-pole` div above), we test our `name` and `order` values. If `name` is equal to "The North Pole" and our current stop's order is `1`, we set a Session variable `isSantaFinished` to false (meaning, no, this is not the last stop) and return true (so our template renders the `.active` class on our `<div>` making it visible on screen).
 
@@ -216,7 +224,7 @@ Template.santaMap.rendered = function(){
 }
 ```
 
-There are a few distinct parts here. First, we're identifying our application with Mapbox by passing our `accessToken` to `L.mapbox.accessToken`. This is done because our map's style is hosted by Mapbox and they need a way to know whether we're "allowed" to access our map (i.e. a random person can't embed our map style and rack up page views on our bill).
+There are a few distinct parts here. First, we're identifying our application with Mapbox by passing our `accessToken` to `L.mapbox.accessToken`. This is done because our map's style is hosted by Mapbox and they need a way to know whether we're "allowed" to access our map (i.e. a random person can't embed our map style and rack up pageviews on our bill).
 
 Next, we actually define our map using `L.mapbox.map` and pass a few arguments. `map` is equal to the `id="map"` we set on our div earlier. The second value is equal to the ID of the Mapbox map style we'd like to use. The third value (the object containing `zoom`, `minZoom`, and `maxZoom`) is a set of default values to help us configure the viewport of our map when it loads.
 
@@ -237,13 +245,19 @@ var loadDefaultData = function(){
 }
 ```
 
-Woah smokies! What the heck is this? Because we're relying on map data that's stored in our database (and is being updated in realtime), we need a way to keep our map updated. Here in our `loadDefaultData` function, we're wrapping two things in a `Tracker.autorun()` function: a lookup on the `Stops` collection to get Santa's _current_ location and wrapping _another_ function `setSantaLocation` in a `setTimeout` callback. [Pump the brakes, dude](http://i68.photobucket.com/albums/i14/marchtrpt4bhs/GIFs/tumblr_liqpes24YQ1qacp1m.gif)!
+Woah smokies! What the heck is this?
+
+#### Keeping Our Map Data Up-To-Date
+
+Because we're relying on map data that's stored in our database (and is being updated in real time), we need a way to keep our map updated. Here in our `loadDefaultData` function, we're wrapping two things in a `Tracker.autorun()` function: a lookup on the `Stops` collection to get Santa's _current_ location and wrapping _another_ function `setSantaLocation` in a `setTimeout` callback. [Pump the brakes, dude](http://i68.photobucket.com/albums/i14/marchtrpt4bhs/GIFs/tumblr_liqpes24YQ1qacp1m.gif)!
 
 Deep breaths. This isn't as scary as it seems. First, why are we wrapping all of this in a `Tracker.autorun()` function? We're doing this because we want to ensure that whenever our `Stops.findOne()` cursor changes (meaning, our database has changed, or, Santa is at a new location), we want to call the `setSantaLocation()` function. Here, we're being a little tricky.
 
-Our use of `Tracker.autorun()` is two fold. First, it ensures that when loading the map, Meteor is pulling in the appropriate data. Said another way, because our `Stops.findOne()` cursor is a reactive data source, we need to "know" when it has a value. By default on page load, our variable `currentLocation` is equal to `undefined` while Meteor loads up. After it loads, the data we need is passed. `autorun()` simply says "when any reactive data within this changes, run this code again."
+Our use of `Tracker.autorun()` is twofold. First, it ensures that when loading the map, Meteor is pulling in the appropriate data. Said another way, because our `Stops.findOne()` cursor is a reactive data source, we need to "know" when it has a value. By default on page load, our variable `currentLocation` is equal to `undefined` while Meteor loads up. After it loads, the data we need is passed. `autorun()` simply says "when any reactive data within this changes, run this code again."
 
-So, our data changes in two ways: first, when the page loads and data is assigned to the variable, and then _again_ whenever our database is updated. Combining everything here allows us to define this code _once_ instead of repeating it again later. A bit tricky, but very handy for situations like this.
+So, our data changes in two ways: when the page loads and data is assigned to the variable, and then _again_ whenever our database is updated. Combining everything here allows us to define this code _once_ instead of repeating it again later. A bit tricky, but very handy for situations like this.
+
+#### Keeping Santa's Location on the Map Up-To-Date
 
 Okay. We're updating when our data changes, and that's great, but what are we actually _doing_ with that data? Pay attention to our call to `setSantaLocation()` above. We're passing two values: the returned `latitude` and `longitude` from Santa's `currentLocation`. Let's take a look at this function to see how this all ties together.
 
@@ -285,7 +299,7 @@ Now, we create our marker passing two values: `[0,0]`, the starting point for ou
 
 ### Timing Santa's Trip
 
-Okay, so we've got our data loaded and our map setup, but how do we actually _track_ Santa? Recall that Santa is only letting us hook our _demo_ up to the sleigh's API, so we need to come up with a way to _simulate_ Santa's movement locally. We'll do this in two parts: first by defining a pair of server side methods for "moving" Santa, and creating some [cron jobs](http://en.wikipedia.org/wiki/Cron) to automate the firing of those methods.
+Okay, so we've got our data loaded and our map set up, but how do we actually _track_ Santa? Recall that Santa is only letting us hook our _demo_ up to the sleigh's API, so we need to come up with a way to _simulate_ Santa's movement locally. We'll do this in two parts: first by defining a pair of server-side methods for "moving" Santa, and creating some [cron jobs](http://en.wikipedia.org/wiki/Cron) to automate the firing of those methods.
 
 <p class="block-header">/server/santa-timer.js</p>
 
@@ -323,7 +337,7 @@ Meteor.methods({
 });
 ```
 
-Lots of stuff, but nothing too wild. Here, we're creaing a method called `updateSantaLocation` that we can use to advanced the position of Santa on the map. The first thing we do here is to look up the current job, its order, and then do a little math to look up Santa's next stop.
+Lots of stuff, but nothing too wild. Here, we're creating a method called `updateSantaLocation` that we can use to advanced the position of Santa on the map. The first thing we do here is to look up the current job, its order, and then do a little math to look up Santa's next stop.
 
 Next, we make use of our `nextStop` variable (equal to a database lookup for a record with an order equal to the current stop's order plus one) to decide whether we need to update our database. This is essentially saying "if the current stop's number plus one is found in the database, go ahead and do all of this." The "all of this" part is split in two: first, update the current stop to no longer be the current stop, and second, update the determined "next stop" to be the current spot. An easy way to visualize this is a pair of runners in a race passing off a baton to one another.
 
@@ -349,7 +363,7 @@ Meteor.methods({
 });
 ```
 
-This is where we make use of the `percolate:synced-cron` package we added earlier in the recipe. Synced Cron allows us to define scheduled, automated "jobs" that run at a specific time. Another way to think about this would be setting your thermostat. Every day at 5pm, for example, you might set your thermostat to start heating your home. When you get home at 6pm, your house is warm (the job your thermostat is doing).
+This is where we make use of the `percolate:synced-cron` package we added earlier in the recipe. `synced-cron` allows us to define scheduled, automated "jobs" that run at a specific time. Another way to think about this would be setting your thermostat. Every day at 5pm, for example, you might set your thermostat to start heating your home. When you get home at 6pm, your house is warm (the job your thermostat is doing).
 
 Instead of heating a house, here we're creating a job called `Deliver Presents` that will run `every 5 minutes`. Every time this cron job is executed, we tell it to call our `updateSantaLocation` method. Putting two and two together, we can see that this essentially says "every five minutes, mark the next location on Santa's list to be the current stop." So cool. But, we're not _all the way there_.
 
@@ -379,7 +393,9 @@ Meteor.startup(function(){
 });
 ```
 
-Hokay. So we've got a few things going on here. Continuing on our original train of thought, notice that here we're adding _another_ cron job that is being setup to call our second method `startPresentDelivery` containing our first cron job. Yeah, [we're cool](http://i.imgur.com/Vfjlhhd.jpg).
+Hokay. So we've got a few things going on here. Continuing on our original train of thought, notice that here we're adding _another_ cron job that is being set up to call our second method `startPresentDelivery` containing our first cron job. Yeah, [we're cool](http://i.imgur.com/Vfjlhhd.jpg).
+
+#### Taking Timezones Into Account
 
 What's up with the timing on this thing? Well, because we're trying to _think globally_ on this one, we want to include all children of the planet (yes, even if they may not technically celebrate Christmas—cool your jets, [festivus](http://en.wikipedia.org/wiki/Festivus)). In order to make this possible, we need to remain aware of the fact that places exist on the planet that are [already living in the future](http://youtu.be/flge_rw6RG0?t=9s).
 
@@ -387,7 +403,9 @@ To account for this, we're configuring _all_ of our cron jobs to use `UTC/GMT` t
 
 The one thing that you'll notice is that we're starting five minutes before `11:00:00 am UTC/GMT`. Why? Well, because our goal is to move Santa every five minutes, we want to account for the fact that when we schedule our first cron job `start_santa_present_delivery`, it will _wait_ five minutes before it actually calls our `startPresentDelivery` method. Setting this first job five minutes earlier ensures that Santa starts moving right at 11am UTC/GMT.
 
-Good? Alright, continuing on, it's important to note that the `percolate:synced-cron` package picks up its time formatting (the `parse.recur().what().the().heck().is(this)` part) from a library called [later.js](http://bunkat.github.io/later/). All jokes aside, this library is really awesome and makes formatting cron job times super easy. If you're looking to do something a bit more custom, make sure to check out the [later.js documentation](http://bunkat.github.io/later/getting-started.html).
+#### Time Formatting with Later.js
+
+Good? All right, continuing on, it's important to note that the `percolate:synced-cron` package picks up its time formatting (the `parse.recur().what().the().heck().is(this)` part) from a library called [later.js](http://bunkat.github.io/later/). All jokes aside, this library is really awesome and makes formatting cron job times super easy. If you're looking to do something a bit more custom, make sure to check out the [later.js documentation](http://bunkat.github.io/later/getting-started.html).
 
 Before we call this thing a success, the last thing we need to do is tell our cron jobs to _actually start_. We can schedule jobs until we're blue in the face, but without firing the `SyncedCron.start()` function, our jobs will sit in our database twiddling their thumbs.
 
@@ -398,7 +416,7 @@ Before we call this thing a success, the last thing we need to do is tell our cr
 
 ### Displaying Santa's Current Location
 
-Alright! So just a few more things and we're ready to rock. First up is adding a little touch to our interface and display Santa's current location (visible in the top right-hand side of our demo). In order to do this, we're going to setup a template and a controller.
+All right! So just a few more things and we're ready to rock. First up is adding a little touch to our interface and display Santa's current location (visible in the top right-hand side of our demo). In order to do this, we're going to setup a template and a controller.
 
 <p class="block-header">/client/views/_santa-header.html</p>
 
@@ -469,7 +487,7 @@ Template.santaFooter.helpers({
 });
 ```
 
-Don't you love Meteor? Look how easy this is. Here, we setup a template helper `sleighConnectionStatus` to test the value of `Meteor.status().connected`. If the value is `true` we return "nice," if it's `false` we return "naughty," and for when things go fully pear-shaped: "unknown."
+Don't you love Meteor? Look how easy this is. Here, we set up a template helper `sleighConnectionStatus` to test the value of `Meteor.status().connected`. If the value is `true` we return "nice," if it's `false` we return "naughty," and for when things go fully pear-shaped: "unknown."
 
 Alright. Don't panic, but, Santa is on his way!
 
