@@ -88,7 +88,7 @@ Fairly spartan. All we're doing here is assigning our global `SANTA_STOPS` varia
 
 <div class="note">
   <h3>A quick note</h3>
-  <p>We're pulling from the order value here because we'll be checking for which of our stops is the North Pole later on. Depending on the nature of the data in your own application (i.e. if your data is dynamic), you'll probably want to look at a unique ID value or a unique name value. <a href="http://i.imgur.com/IW8simF.gif">The more you know</a>.</p>
+  <p>We're pulling from the order value here because we'll be checking for which of our stops is the North Pole later on. Depending on the nature of the data in your own application (i.e. if your data is dynamic), you'll probably want to look at a unique ID value or a unique name value. <a href="https://i.imgur.com/IW8simF.gif">The more you know</a>.</p>
 </div>
 
 ### Publishing and Subscribing to Our Data
@@ -132,7 +132,7 @@ Here, we're keeping things nice and simple. Making use of [Iron Router's `waitOn
 
 Before we start tracking Santa, we'll need to setup our map to actually plot _where_ he's visiting. To do this, we're going to make use of the `trepafi:mapbox` package to give us access to Mapbox. Wait...what the heck is Mapbox?
 
-[Mapbox](http://mapbox.com) is a library and series of tools that allow you to design and implement custom maps. It relies on data from OpenStreetMap and other sources to create really slick, interactive maps. We're going to use Mapbox to do two things: create our world map and plot Santa _on that map_. The first thing we need to do, then, is initialize our map and get it on screen.
+[Mapbox](https://mapbox.com) is a library and series of tools that allow you to design and implement custom maps. It relies on data from OpenStreetMap and other sources to create really slick, interactive maps. We're going to use Mapbox to do two things: create our world map and plot Santa _on that map_. The first thing we need to do, then, is initialize our map and get it on screen.
 
 #### Creating a Template to House Our Map
 
