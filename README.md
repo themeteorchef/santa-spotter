@@ -1,12 +1,15 @@
-#### The Meteor Chef
-#### \#004 - SantaSpotter
+#### Tutorial: Santa Spotter
 
-Santa Claus is coming down from the North Pole to deliver presents to kids all over the world. In this recipe we'll learn how to use the Mapbox API to create an interactive map that we can use to track this bearded fellow around the world on Christmas morning.
+undefined
 
-[Read on The Meteor Chef](http://themeteorchef.com/recipes/santa-spotter)  
+[Read this tutorial on The Meteor Chef](https://themeteorchef.com/tutorials/santa-spotter)  
 
-[Demo the Recipe](http://santaspotter.themeteorchef.com)  
+[Download the source (.zip)](https://github.com/themeteorchef/santa-spotter/archive/master.zip)
 
-[Download the Source](https://github.com/themeteorchef/santa-spotter/archive/master.zip)
+---
 
-The code for this recipe is licensed under the [MIT License](http://opensource.org/licenses/MIT).
+**Need help with this?** [Sign up for a Mentorship appointment](https://themeteorchef.com/mentorship?readme=santa-spotter) and get 1-on-1 help.
+
+---
+
+_The code for this tutorial is licensed under the [MIT License](http://opensource.org/licenses/MIT)_.
